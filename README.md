@@ -137,7 +137,8 @@ Now you can manage the lifecycle of your Docker containers more flexibly.
 
     Ensure that your Docker containers are running.
 
-4. Install the [Docker extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) for Visual Studio Code.
+4a. Install the [Docker extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-docker) for Visual Studio Code.
+4b. Install the [Remote Development Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) for Visual Studio Code
 
 5. Open the "Docker" view in Visual Studio Code by clicking on the Docker icon in the Activity Bar.
 
