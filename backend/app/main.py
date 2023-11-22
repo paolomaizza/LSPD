@@ -9,6 +9,8 @@ from fastapi import FastAPI
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from datetime import datetime
+import pandas as pd
+
 
 from .mymodules.birthdays import return_birthday, print_birthdays_str
 
@@ -23,6 +25,12 @@ birthdays_dictionary = {
     'Rowan Atkinson': '01/6/1955'
 }
 
+df = pd.read_csv('/app/app/employees.csv')
+
+@app.get('/csv_show')
+def read_and_return_csv():
+    aux = df['Age'].values
+    return{"Age": str(aux.argmin())}
 
 @app.get('/')
 def read_root():
