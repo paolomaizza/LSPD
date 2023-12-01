@@ -27,6 +27,8 @@ The project follows a simple client-server architecture:
 ### Communication
 Bidirectional communication is established between the Frontend (Flask) and Backend (FastAPI). Docker Compose facilitates this communication, allowing the components to work together seamlessly.
 
+
+
 ## Project Structure
 
 - `backend/`: FastAPI backend implementation.
