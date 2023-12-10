@@ -4,33 +4,19 @@ Backend module for the FastAPI application.
 This module defines a FastAPI application that serves
 as the backend for the project.
 """
-
-from fastapi import FastAPI
-from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 from datetime import datetime
-import pandas as pd
 
+from fastapi import FastAPI
+from starlette.responses import JSONResponse
 
-from .mymodules.birthdays import return_birthday, print_birthdays_str
+from .mymodules.parapharmacies import (
+    find_by_region,
+    is_valid_region,
+    list_regions,
+)
 
 app = FastAPI()
 
-# Dictionary of birthdays
-birthdays_dictionary = {
-    'Albert Einstein': '03/14/1879',
-    'Benjamin Franklin': '01/17/1706',
-    'Ada Lovelace': '12/10/1815',
-    'Donald Trump': '06/14/1946',
-    'Rowan Atkinson': '01/6/1955'
-}
-
-df = pd.read_csv('/app/app/employees.csv')
-
-@app.get('/csv_show')
-def read_and_return_csv():
-    aux = df['Age'].values
-    return{"Age": str(aux.argmin())}
 
 @app.get('/')
 def read_root():
@@ -43,33 +29,22 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.get('/query/{person_name}')
-def read_item(person_name: str):
+@app.get('/query/{region}')
+def read_item(region: str):
     """
-    Endpoint to query birthdays based on person_name.
+    Endpoint to query parapharmacies based on region.
 
     Args:
-        person_name (str): The name of the person.
+        region (str): The name of the region.
 
     Returns:
-        dict: Birthday information for the provided person_name.
+        dict: Parapharmacies in the selected region.
     """
-    person_name = person_name.title()  # Convert to title case for consistency
-    birthday = birthdays_dictionary.get(person_name)
-    if birthday:
-        return {"person_name": person_name, "birthday": birthday}
+    region = int(region)
+    if is_valid_region(region):
+        return {"region": region, "parapharmacies": find_by_region(region)}
     else:
-        return {"error": "Person not found"}
-
-
-@app.get('/module/search/{person_name}')
-def read_item_from_module(person_name: str):
-    return {return_birthday(person_name)}
-
-
-@app.get('/module/all')
-def dump_all_birthdays():
-    return {print_birthdays_str()}
+        return {"error": "Invalid region"}
 
 
 @app.get('/get-date')
@@ -82,3 +57,14 @@ def get_date():
     """
     current_date = datetime.now().isoformat()
     return JSONResponse(content={"date": current_date})
+
+
+@app.get('/regions')
+def get_regions():
+    """
+    Endpoint to get the list of regions.
+
+    Returns:
+        list: Regions as code/name pairs
+    """
+    return {"regions": list_regions()}
